@@ -60,7 +60,7 @@ function Footer({ onCartClick, cartCount }) {
                         </li>
                         <li>
                             <span className="contact-icon">📞</span>
-                            <span>9363768009, 8883785516</span>
+                            <span>9363768009, 8883785516, 7904846933</span>
                         </li>
                     </ul>
                 </div>
