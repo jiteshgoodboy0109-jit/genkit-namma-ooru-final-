@@ -5,6 +5,8 @@ import ProductCard from '../components/common/ProductCard';
 import MobileProductCard from '../components/common/MobileProductCard';
 import { PRODUCTS_DATA } from '../services/products';
 import { useCart } from './CartDrawer';
+import { FiFilter } from "react-icons/fi";
+
 
 function Products() {
     const { addToCart } = useCart();
@@ -12,6 +14,7 @@ function Products() {
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [isMobile, setIsMobile] = useState(false);
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [filters, setFilters] = useState({
         search: '',
         categories: [],
@@ -70,10 +73,10 @@ function Products() {
         const checkMobile = () => {
             setIsMobile(window.innerWidth <= 768);
         };
-        
+
         checkMobile();
         window.addEventListener('resize', checkMobile);
-        
+
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
@@ -190,7 +193,17 @@ function Products() {
     return (
         <div className="products-page">
             {/* Left Sidebar - Filters */}
-            <aside className="filters-sidebar">
+            <aside className={`filters-sidebar ${isFilterOpen ? 'open' : ''}`}>
+                {/* Mobile Filter Close Button */}
+                {isMobile && (
+                    <button
+                        className="mobile-filter-close"
+                        onClick={() => setIsFilterOpen(false)}
+                    >
+                        <i className="fas fa-times"></i>
+                    </button>
+                )}
+
                 <div className="filter-section-container">
                     {/* Search Bar */}
                     <div className="filter-search-container">
@@ -292,11 +305,28 @@ function Products() {
                         </ul>
                     </div>
 
-                    <button className="apply-button" onClick={applyFilters}>Add to Filter</button>
+                    <button className="apply-button" onClick={applyFilters}>Apply Filters</button>
                 </div>
             </aside>
 
             {/* Right Side - Products Grid */}
+            {/* Mobile Filter Button */}
+            {isMobile && (
+                <button
+                    className="filter-open-btn"
+                    onClick={() => setIsFilterOpen(true)}
+                >
+                    <FiFilter />
+                </button>
+
+            )}
+            {isMobile && isFilterOpen && (
+                <div
+                    className="filter-overlay"
+                    onClick={() => setIsFilterOpen(false)}
+                />
+            )}
+
             <main className="products-main">
                 <div className="products-header">
                     <h1>All Products</h1>

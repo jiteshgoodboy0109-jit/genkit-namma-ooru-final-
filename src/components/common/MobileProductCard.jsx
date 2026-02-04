@@ -1,6 +1,7 @@
 import '../../assets/styles/MobileProductCard.css';
 
 import { useState } from 'react';
+import { FiShoppingCart } from 'react-icons/fi';
 
 function MobileProductCard({ product, onAdd }) {
   const [quantity, setQuantity] = useState(1);
@@ -46,19 +47,22 @@ function MobileProductCard({ product, onAdd }) {
           <span className="mobile-stock-badge low-stock">Only 2 stock available</span>
         </div>
 
-        <div className="mobile-quantity-selector">
-          <button className="mobile-quantity-btn minus" onClick={decreaseQuantity}>
-            −
-          </button>
-          <span className="mobile-quantity-value">{quantity}</span>
-          <button className="mobile-quantity-btn plus" onClick={increaseQuantity}>
-            +
+        {/* Quantity and Cart Row */}
+        <div className="mobile-quantity-cart-row">
+          <div className="mobile-quantity-selector">
+            <button className="mobile-quantity-btn minus" onClick={decreaseQuantity}>
+              −
+            </button>
+            <span className="mobile-quantity-value">{quantity}</span>
+            <button className="mobile-quantity-btn plus" onClick={increaseQuantity}>
+              +
+            </button>
+          </div>
+          
+          <button className="mobile-cart-icon-btn" onClick={handleAddToCart}>
+            <FiShoppingCart />
           </button>
         </div>
-
-        <button className="mobile-add-cart-btn" onClick={handleAddToCart}>
-          Add to Cart
-        </button>
 
         {/* Notification */}
         {showNotification && (
