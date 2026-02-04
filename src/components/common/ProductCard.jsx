@@ -1,6 +1,7 @@
 import '../../assets/styles/ProductCard.css';
 
 import { useState } from 'react';
+import { FiShoppingCart } from 'react-icons/fi';
 
 function ProductCard({ product, onAdd }) {
   const [quantity, setQuantity] = useState(1);
@@ -46,19 +47,22 @@ function ProductCard({ product, onAdd }) {
           <span className="stock-badge low-stock">Only 2 stock available</span>
         </div>
 
-        <div className="quantity-selector">
-          <button className="quantity-btn minus" onClick={decreaseQuantity}>
-            −
-          </button>
-          <span className="quantity-value">{quantity}</span>
-          <button className="quantity-btn plus" onClick={increaseQuantity}>
-            +
+        {/* Quantity and Cart Row */}
+        <div className="quantity-cart-row">
+          <div className="quantity-selector">
+            <button className="quantity-btn minus" onClick={decreaseQuantity}>
+              −
+            </button>
+            <span className="quantity-value">{quantity}</span>
+            <button className="quantity-btn plus" onClick={increaseQuantity}>
+              +
+            </button>
+          </div>
+          
+          <button className="cart-icon-btn" onClick={handleAddToCart}>
+            <FiShoppingCart />
           </button>
         </div>
-
-        <button className="add-cart-btn" onClick={handleAddToCart}>
-          Add to Cart
-        </button>
 
         {/* Notification */}
         {showNotification && (
