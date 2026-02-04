@@ -1,0 +1,521 @@
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    background: #ffffff;
+    padding: 0.8rem 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.navbar-scrolled {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 0.6rem 0;
+}
+
+.navbar-container {
+    width: 100%;
+    margin: 0;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.navbar-logo a {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Touch to zoom effect requested */
+.navbar-logo a:hover {
+    transform: scale(1.05);
+}
+
+.logo-image {
+    height: 60px;
+    /* Increased size for clarity */
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.05));
+}
+
+.logo-text-container {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.logo-text-main {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2c3e50;
+    letter-spacing: -0.3px;
+}
+
+.logo-text-sub {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #555;
+}
+
+/* ============================================
+   2. SEARCH BAR (PILL SHAPE)
+   ============================================ */
+.navbar-search-container {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 2rem;
+}
+
+.search-pill {
+    display: flex;
+    align-items: center;
+    background: #f4f7f2;
+    /* Light greenish-beige tint */
+    border-radius: 8px;
+    /* Soft rounded corners */
+    padding: 0.3rem 0.6rem 0.3rem 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+    /* No border initially */
+}
+
+.search-pill:focus-within {
+    background: #ffffff;
+    border-color: #2d6a4f;
+    box-shadow: 0 4px 12px rgba(45, 106, 79, 0.1);
+}
+
+.search-input-pill {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    color: #4a4a4a;
+    /* Darker grey text */
+    outline: none;
+}
+
+.search-input-pill::placeholder {
+    color: #888;
+    /* Grey placeholder */
+}
+
+.search-button-pill {
+    background: transparent;
+    /* Remove background */
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50%;
+    transition: transform 0.2s ease;
+    margin-left: 0;
+    box-shadow: none;
+    /* Remove shadow */
+    width: auto;
+    height: auto;
+}
+
+.search-button-pill:hover {
+    transform: scale(1.1);
+    background: transparent;
+    box-shadow: none;
+}
+
+.search-icon-svg {
+    width: 20px;
+    height: 20px;
+    color: #666;
+    /* Grey icon */
+    stroke-width: 2.5px;
+    /* Slightly bolder icon */
+}
+
+/* ============================================
+   3. DESKTOP NAV & ACTIONS
+   ============================================ */
+.desktop-nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-links-desktop {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #2c3e50;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    /* Bold as requested */
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-link:hover {
+    color: #2d6a4f;
+    /* Green hover */
+}
+
+.chevron-down {
+    font-size: 0.7rem;
+    margin-top: 2px;
+    color: #888;
+}
+
+/* Cart Section refined */
+.cart-section {
+    display: flex;
+    align-items: center;
+}
+
+/* Circle Icon Container */
+.cart-icon-circle {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #f8f9fa;
+    /* Light grey circle background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.cart-icon-circle:hover {
+    background: #e9ecef;
+    transform: scale(1.05);
+    /* Touch to zoom effect */
+    border-color: #dee2e6;
+}
+
+.cart-icon-svg {
+    width: 24px;
+    height: 24px;
+    color: #2c3e50;
+    /* Dark grey/black outline */
+    stroke-width: 2px;
+}
+
+.cart-badge-circle {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #ff4757;
+    /* Red Badge */
+    color: white;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    /* Pill shape if > 9 */
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;
+    padding: 0 4px;
+}
+
+/* ============================================
+   4. RESPONISVE / MOBILE STYLES
+   ============================================ */
+.mobile-toggle-container {
+    display: none;
+    /* Hidden on desktop */
+}
+
+.mobile-menu {
+    position: fixed;
+    top: 80px;
+    /* Below navbar */
+    left: 0;
+    width: 100%;
+    background: #2d6a4f;
+    /* GREEN Background as requested */
+    transform: translateY(-150%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+    padding: 1rem 0;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-menu.open {
+    transform: translateY(0);
+}
+
+/* Mobile Search Inside Drawer */
+.mobile-search-container {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.search-pill.mobile-style {
+    background: rgba(255, 255, 255, 0.15);
+    /* Semi-transparent white */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.search-pill.mobile-style:focus-within {
+    background: white;
+}
+
+.search-pill.mobile-style .search-input-pill {
+    color: white;
+    /* White text initially */
+}
+
+.search-pill.mobile-style .search-input-pill::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.search-pill.mobile-style:focus-within .search-input-pill {
+    color: #333;
+    /* Dark text on focus (white bg) */
+}
+
+.search-pill.mobile-style .search-icon-svg {
+    color: white;
+}
+
+.search-pill.mobile-style:focus-within .search-icon-svg {
+    color: #2d6a4f;
+    /* Green icon on focus */
+}
+
+.mobile-nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-nav-links li {
+    width: 100%;
+}
+
+.mobile-nav-links a {
+    display: block;
+    padding: 1rem 2rem;
+    color: white;
+    /* White text on Green bg */
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background 0.2s ease;
+}
+
+.mobile-nav-links a:hover {
+    background: rgba(255, 255, 255, 0.1);
+    padding-left: 2.5rem;
+    /* Slide effect */
+}
+
+/* ============================================
+   MEDIA QUERIES
+   ============================================ */
+
+/* ============================================
+   RESPONSIVE / MOBILE STYLES
+   ============================================ */
+.mobile-header-search {
+    display: none;
+}
+
+/* Tablet (Compact Navbar) */
+@media (max-width: 1024px) {
+    .navbar-container {
+        padding: 0 1rem;
+        gap: 1rem;
+    }
+
+    .navbar-search-container.desktop-only {
+        display: none;
+        /* Hide Desktop Search on Tablet/Mobile */
+    }
+
+    .nav-links-desktop {
+        gap: 1rem;
+    }
+
+    .cart-pill-button {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile (Hamburger) */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0.5rem 0;
+        /* Consistent vertical padding */
+    }
+
+    .navbar-container {
+        padding: 0 1rem;
+        gap: 0.5rem;
+        /* Reduced gap for tight mobile fit */
+    }
+
+    .desktop-nav-actions {
+        display: none;
+    }
+
+    /* Hide Desktop Search container */
+    .navbar-search-container {
+        display: none;
+    }
+
+    /* 1. Logo - Icon Only */
+    .navbar-logo {
+        display: flex;
+        align-items: center;
+        margin-right: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .logo-text-container {
+        display: none;
+    }
+
+    .logo-image {
+        height: 42px;
+        /* Increased size as requested */
+        width: auto;
+    }
+
+    /* 2. Mobile Search - Centered & Filling Space */
+    .mobile-header-search {
+        display: block;
+        flex: 1;
+        /* Takes available space */
+        margin-right: 0.5rem;
+        /* Reduced margin to fit logo+search+icons cleanly */
+        min-width: 0;
+        /* Prevents overflow */
+    }
+
+    /* Premium Mobile Search Style */
+    /* Flat Mobile Search Style */
+    .mobile-header-style {
+        background: #f4f7f2;
+        border: 1px solid transparent;
+        /* No border */
+        padding: 0 0.4rem 0 1rem;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        border-radius: 8px;
+        /* Match desktop rounded */
+        box-shadow: none;
+        /* No shadow */
+    }
+
+    .mobile-header-style:focus-within {
+        background: #ffffff;
+        border-color: #2d6a4f;
+        box-shadow: 0 4px 12px rgba(45, 106, 79, 0.1);
+    }
+
+    .mobile-header-style .search-input-pill {
+        font-size: 0.9rem;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* 3. Mobile Actions - Icons & Menu */
+    .mobile-toggle-container {
+        display: flex;
+        align-items: center;
+        gap: 0.2rem;
+        flex-shrink: 0;
+    }
+
+    /* Cart Icon Mobile */
+    .cart-icon-circle.mobile-only {
+        width: 40px;
+        height: 40px;
+        background: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cart-icon-circle.mobile-only:active {
+        background: rgba(0, 0, 0, 0.05);
+    }
+
+    /* Hamburger Menu Button */
+    .mobile-menu-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        width: 24px;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    .hamburger span {
+        display: block;
+        width: 100%;
+        height: 2px;
+        background: #2c3e50;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+    }
+
+    /* Hamburger Animation */
+    .hamburger.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+
+    .hamburger.active span:nth-child(2) {
+        opacity: 0;
+    }
+
+    .hamburger.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+}
