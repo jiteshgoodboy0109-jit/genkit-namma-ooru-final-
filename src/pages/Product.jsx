@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../assets/styles/Product.css';
 import ProductCard from '../components/common/ProductCard';
+import MobileProductCard from '../components/common/MobileProductCard';
 import { PRODUCTS_DATA } from '../services/products';
 import { useCart } from './CartDrawer';
 
@@ -10,6 +11,7 @@ function Products() {
     const location = useLocation();
     const [products, setProducts] = useState([]);
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const [isMobile, setIsMobile] = useState(false);
     const [filters, setFilters] = useState({
         search: '',
         categories: [],
@@ -61,6 +63,18 @@ function Products() {
         setCategoryCounts(catCounts);
         setBrandCounts(brandCounts);
         setNutritionCounts(nutritionCounts);
+    }, []);
+
+    // Check if mobile view
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        
+        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
     // Sync URL search param with filters
@@ -299,11 +313,19 @@ function Products() {
                 ) : (
                     <div className="products-grid">
                         {filteredProducts.map(product => (
-                            <ProductCard
-                                key={product.id}
-                                product={product}
-                                onAdd={(product, quantity) => addToCart(product, quantity)}
-                            />
+                            isMobile ? (
+                                <MobileProductCard
+                                    key={product.id}
+                                    product={product}
+                                    onAdd={(product, quantity) => addToCart(product, quantity)}
+                                />
+                            ) : (
+                                <ProductCard
+                                    key={product.id}
+                                    product={product}
+                                    onAdd={(product, quantity) => addToCart(product, quantity)}
+                                />
+                            )
                         ))}
                     </div>
                 )}

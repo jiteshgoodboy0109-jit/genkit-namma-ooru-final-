@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react';
 import '../assets/styles/Home.css';
 
 import ProductCard from '../components/common/ProductCard';
+import MobileProductCard from '../components/common/MobileProductCard';
 import { PRODUCTS_DATA } from '../services/products';
 import { useCart } from './CartDrawer';
-import slide1 from '../assets/images/banner.png';
+import slide1 from '../assets/images/mobile.jpeg';
 import slide2 from '../assets/images/banner2.png';
 import specials from '../assets/images/specials.jpeg';
 import amul from '../assets/images/amul.jpeg';
@@ -51,6 +52,8 @@ const brands = [
 function Home() {
     const { addToCart } = useCart();
     const [currentSlide, setCurrentSlide] = useState(0);
+    const [showAllCategories, setShowAllCategories] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     // ============================================
     // SLIDER LOGIC
@@ -72,11 +75,28 @@ function Home() {
         return () => clearInterval(interval);
     }, []);
 
+    // Check if mobile view
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
     const slide = slides[currentSlide];
 
     const featuredProducts = PRODUCTS_DATA
         .flatMap(category => category.products)
-        .slice(0, 5);
+        .slice(0, isMobile ? 4 : 5);
+
+    // Determine which categories to show
+    const displayedCategories = isMobile && !showAllCategories 
+        ? categories.slice(0, 4) 
+        : categories;
 
     return (
         <div className="home-page">
@@ -104,7 +124,7 @@ function Home() {
             <section className="category-section">
                 <h2 className="category-heading">Shop By Category</h2>
                 <div className="category-grid">
-                    {categories.map((cat) => (
+                    {displayedCategories.map((cat) => (
                         <div key={cat.id} className="category-card">
                             <div className="category-image">
                                 <img src={cat.image} alt={cat.title} />
@@ -113,16 +133,44 @@ function Home() {
                         </div>
                     ))}
                 </div>
+                {isMobile && categories.length > 4 && (
+                    <>
+                        {!showAllCategories && (
+                            <button 
+                                className="see-more-btn"
+                                onClick={() => setShowAllCategories(true)}
+                            >
+                                See More
+                            </button>
+                        )}
+                        {showAllCategories && (
+                            <div 
+                                className="see-less-text"
+                                onClick={() => setShowAllCategories(false)}
+                            >
+                                See Less
+                            </div>
+                        )}
+                    </>
+                )}
             </section>
             <section className="featured-section">
                 <h2 className="featured-heading">Featured Products</h2>
                 <div className="featured-grid">
                     {featuredProducts.map(product => (
-                        <ProductCard
-                            key={product.id}
-                            product={product}
-                            onAdd={(product) => addToCart(product, 1)}
-                        />
+                        isMobile ? (
+                            <MobileProductCard
+                                key={product.id}
+                                product={product}
+                                onAdd={(product) => addToCart(product, 1)}
+                            />
+                        ) : (
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                onAdd={(product) => addToCart(product, 1)}
+                            />
+                        )
                     ))}
                 </div>
             </section>
