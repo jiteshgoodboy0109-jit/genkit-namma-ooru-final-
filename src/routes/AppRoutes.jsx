@@ -1,29 +1,41 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Navbar from '../components/common/Navbar';
-import Footer from '../components/common/Footer';
-import Home from '../pages/Home';
-import Products from '../pages/Product';
-import Services from '../pages/Services';
-import Contact from '../pages/Contact';
-import CartDrawer, { CartProvider, useCart } from '../pages/CartDrawer';
-import { useState } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import Navbar from "../components/common/Navbar";
+import Footer from "../components/common/Footer";
+import Home from "../pages/Home";
+import Services from "../pages/Services";
+import Contact from "../pages/Contact";
+import Products from "../pages/Product";
+import CartDrawer, { CartProvider, useCart } from "../pages/CartDrawer";
+import { useState, useEffect } from "react";
 
-function AppContent() {
+import { AdminLogin } from "../pages/admin/login/AdminLogin";
+import { Orders } from "../pages/admin/orders/Orders";
+
+function UserLayout() {
   const { cartCount } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isPageTransitioning, setIsPageTransitioning] = useState(false);
+  const location = useLocation();
 
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
 
+  useEffect(() => {
+    setIsPageTransitioning(true);
+    const timer = setTimeout(() => {
+      setIsPageTransitioning(false);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+
   return (
     <>
-      <Navbar
-        cartCount={cartCount}
-        onCartClick={toggleCart}
-      />
+      <Navbar cartCount={cartCount} onCartClick={toggleCart} />
 
-      <main className="main-content">
+      <main
+        className={`main-content ${isPageTransitioning ? "page-transitioning" : ""}`}
+      >
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
@@ -32,26 +44,38 @@ function AppContent() {
         </Routes>
       </main>
 
-      <CartDrawer
-        isOpen={isCartOpen}
-        onClose={toggleCart}
-      />
+      <CartDrawer isOpen={isCartOpen} onClose={toggleCart} />
 
-      <Footer
-        onCartClick={toggleCart}
-        cartCount={cartCount}
-      />
+      <Footer onCartClick={toggleCart} cartCount={cartCount} />
+    </>
+  );
+}
+
+function AdminLayout() {
+  return (
+    <>
+      <Routes>
+        <Route path="/login/" element={<AdminLogin />} />
+        <Route path="/orders/" element={<Orders />} />
+      </Routes>
     </>
   );
 }
 
 function AppRoutes() {
   return (
-    <CartProvider>
+    <>
       <BrowserRouter>
-        <AppContent />
+        <Routes>
+          <Route path="/admin/*" element={<AdminLayout/>} />
+          <Route path="/*" element={
+            <CartProvider>
+              <UserLayout/>
+            </CartProvider>
+          }/>
+        </Routes>
       </BrowserRouter>
-    </CartProvider>
+    </>
   );
 }
 
