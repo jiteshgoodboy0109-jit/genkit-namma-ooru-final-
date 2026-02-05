@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../../assets/styles/Navbar.css';
 import logo from '../../assets/images/Namma Oru Department Store Logo b.png';
 
@@ -9,6 +9,7 @@ function Navbar({ cartCount, onCartClick }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -27,8 +28,15 @@ function Navbar({ cartCount, onCartClick }) {
         e.preventDefault();
         if (searchQuery.trim()) {
             navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
-            setIsMobileMenuOpen(false); // Close menu if open
+            setIsMobileMenuOpen(false); 
         }
+    };
+
+    // Function to determine if a link is active
+    const isActiveLink = (path) => {
+        if (path === '/' && location.pathname === '/') return true;
+        if (path !== '/' && location.pathname.startsWith(path)) return true;
+        return false;
     };
 
     return (
@@ -88,14 +96,14 @@ function Navbar({ cartCount, onCartClick }) {
 
                     {/* Navigation Links */}
                     <ul className="nav-links-desktop">
-                        <li><a href="/" className="nav-link">Home</a></li>
+                        <li><a href="/" className={`nav-link ${isActiveLink('/') ? 'active' : ''}`}>Home</a></li>
                         <li>
-                            <a href="/products" className="nav-link dropdown-trigger">
-                                Products <span className="chevron-down">▼</span>
+                            <a href="/products" className={`nav-link dropdown-trigger ${isActiveLink('/products') ? 'active' : ''}`}>
+                                Products 
                             </a>
                         </li>
-                        <li><a href="/services" className="nav-link">Services</a></li>
-                        <li><a href="/contact" className="nav-link">Contact</a></li>
+                        <li><a href="/services" className={`nav-link ${isActiveLink('/services') ? 'active' : ''}`}>Services</a></li>
+                        <li><a href="/contact" className={`nav-link ${isActiveLink('/contact') ? 'active' : ''}`}>Contact</a></li>
                     </ul>
 
                     {/* Cart Section: Icon Only (Premium Outline) */}
@@ -143,10 +151,10 @@ function Navbar({ cartCount, onCartClick }) {
                 {/* Mobile Search - Removed from here as requested to be in header, specifically "remove shop name and add search bar connected to product page" */}
 
                 <ul className="mobile-nav-links">
-                    <li><a href="/" onClick={toggleMobileMenu}>Home</a></li>
-                    <li><a href="/products" onClick={toggleMobileMenu}>Products</a></li>
-                    <li><a href="/services" onClick={toggleMobileMenu}>Services</a></li>
-                    <li><a href="/contact" onClick={toggleMobileMenu}>Contact</a></li>
+                    <li><a href="/" onClick={toggleMobileMenu} className={isActiveLink('/') ? 'active' : ''}>Home</a></li>
+                    <li><a href="/products" onClick={toggleMobileMenu} className={isActiveLink('/products') ? 'active' : ''}>Products</a></li>
+                    <li><a href="/services" onClick={toggleMobileMenu} className={isActiveLink('/services') ? 'active' : ''}>Services</a></li>
+                    <li><a href="/contact" onClick={toggleMobileMenu} className={isActiveLink('/contact') ? 'active' : ''}>Contact</a></li>
                 </ul>
             </div>
         </nav>
