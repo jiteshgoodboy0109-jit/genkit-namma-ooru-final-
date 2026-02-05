@@ -93,9 +93,13 @@
 }
 
 .stock-badge.low-stock {
-  background: #fef3c7;
-  color: #d97706;
-  border: 1px solid #fbbf24;
+  background: transparent;
+  color: #dc2626;
+  border: none;
+  padding: 0;
+  font-size: 0.8rem;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 /* Quantity Selector */
