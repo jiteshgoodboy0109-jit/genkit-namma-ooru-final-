@@ -4,7 +4,7 @@ import '../assets/styles/Home.css';
 
 import ProductCard from '../components/common/ProductCard';
 import MobileProductCard from '../components/common/MobileProductCard';
-import { PRODUCTS_DATA } from '../services/products';
+import { getHomeProducts } from '../services/products';
 import { useCart } from './CartDrawer';
 import slide1 from '../assets/images/mobile.jpeg';
 import slide2 from '../assets/images/banner2.png';
@@ -54,6 +54,8 @@ function Home() {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [showAllCategories, setShowAllCategories] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     // ============================================
     // SLIDER LOGIC
@@ -86,11 +88,29 @@ function Home() {
         
         return () => window.removeEventListener('resize', checkMobile);
     }, []);
+useEffect(() => {
+    const fetchProducts = async () => {
+        try {
+            const productsData = await getHomeProducts();
+            const formattedProducts = productsData.map(product => ({
+                ...product,
+                image: `${import.meta.env.VITE_MEDIA_URL}${product.image}`
+            }));
 
+            setProducts(formattedProducts);
+            setLoading(false);
+        } catch (error) {
+            console.error('Error fetching home products:', error);
+            setProducts([]);
+            setLoading(false);
+        }
+    };
+
+    fetchProducts();
+}, []);
     const slide = slides[currentSlide];
 
-    const featuredProducts = PRODUCTS_DATA
-        .flatMap(category => category.products)
+    const featuredProducts = products
         .slice(0, isMobile ? 4 : 5);
 
     // Determine which categories to show
@@ -157,21 +177,31 @@ function Home() {
             <section className="featured-section">
                 <h2 className="featured-heading">Featured Products</h2>
                 <div className="featured-grid">
-                    {featuredProducts.map(product => (
-                        isMobile ? (
-                            <MobileProductCard
-                                key={product.id}
-                                product={product}
-                                onAdd={(product) => addToCart(product, 1)}
-                            />
-                        ) : (
-                            <ProductCard
-                                key={product.id}
-                                product={product}
-                                onAdd={(product) => addToCart(product, 1)}
-                            />
-                        )
-                    ))}
+                    {loading ? (
+                        Array.from({ length: isMobile ? 4 : 5 }).map((_, index) => (
+                            <div key={index} className="product-skeleton">
+                                <div className="skeleton-image"></div>
+                                <div className="skeleton-text"></div>
+                                <div className="skeleton-price"></div>
+                            </div>
+                        ))
+                    ) : (
+                        featuredProducts.map(product => (
+                            isMobile ? (
+                                <MobileProductCard
+                                    key={product.id}
+                                    product={product}
+                                    onAdd={(product) => addToCart(product, 1)}
+                                />
+                            ) : (
+                                <ProductCard
+                                    key={product.id}
+                                    product={product}
+                                    onAdd={(product) => addToCart(product, 1)}
+                                />
+                            )
+                        ))
+                    )}
                 </div>
             </section>
             <section className="bottom-banner-section">

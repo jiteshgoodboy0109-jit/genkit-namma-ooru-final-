@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import '../assets/styles/Product.css';
 import ProductCard from '../components/common/ProductCard';
 import MobileProductCard from '../components/common/MobileProductCard';
-import { PRODUCTS_DATA } from '../services/products';
+import { getAllProducts } from '../services/products';
 import { useCart } from './CartDrawer';
 import { FiFilter } from "react-icons/fi";
 
@@ -28,45 +28,30 @@ function Products() {
     const [nutritionCounts, setNutritionCounts] = useState({});
 
     useEffect(() => {
-        // Flatten all products from all categories
-        const allProducts = PRODUCTS_DATA.flatMap(category =>
-            category.products.map(product => ({
-                ...product,
-                categoryName: category.name
-            }))
-        );
-        setProducts(allProducts);
-        setFilteredProducts(allProducts);
+    const loadProducts = async () => {
+        const apiProducts = await getAllProducts();
+        const formattedProducts = apiProducts.map(p => ({
+            id: p.id,
+            name: p.name,
+            price: Number(p.price),
+            image: p.image,
+            stock: p.stock,
+            slug: p.slug,
+            categoryName: "General",
+            unit: "1 pc",
+            discount: p.offer_badge ? 10 : 0
+        }));
 
-        // Calculate counts
-        const catCounts = {};
-        const brandCounts = {};
-        const nutritionCounts = {
-            'High Fiber': 0,
-            'Low Sugar': 0
-        };
+        setProducts(formattedProducts);
+        setFilteredProducts(formattedProducts);
 
-        allProducts.forEach(product => {
-            // Category counts
-            catCounts[product.categoryName] = (catCounts[product.categoryName] || 0) + 1;
-
-            // Brand counts (example brands)
-            const brand = 'Organic Farms'; // Default brand for demo
-            brandCounts[brand] = (brandCounts[brand] || 0) + 1;
-
-            // Nutrition counts (simplified logic)
-            if (product.name.toLowerCase().includes('grain') || product.name.toLowerCase().includes('rice')) {
-                nutritionCounts['High Fiber']++;
-            }
-            if (product.name.toLowerCase().includes('milk') || product.name.toLowerCase().includes('dairy')) {
-                nutritionCounts['Low Sugar']++;
-            }
-        });
-
+        // simple category count
+        const catCounts = { General: formattedProducts.length };
         setCategoryCounts(catCounts);
-        setBrandCounts(brandCounts);
-        setNutritionCounts(nutritionCounts);
-    }, []);
+    };
+
+    loadProducts();
+}, []);
 
     // Check if mobile view
     useEffect(() => {
