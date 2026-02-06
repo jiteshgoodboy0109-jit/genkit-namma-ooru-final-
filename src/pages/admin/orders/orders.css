@@ -257,6 +257,14 @@ th {
   animation: modalFadeUp 0.25s ease;
 }
 
+.no-order-message{
+  font-size: 25px;
+  color: #dc2626;
+  font-weight: 600;
+  text-align: center;
+  padding-top: 100px;
+}
+
 @keyframes modalFadeUp {
   from {
     opacity: 0;

@@ -8,3 +8,10 @@ export const getAdminOrders = (params={}) => {
 }
 
 
+export const UpdateOrderStatus = (orderId,status) => {
+    const res = api.patch(`/orders/admin/${orderId}/status/`,{
+        status
+    })
+    return res
+}
+
