@@ -1,0 +1,17 @@
+.customers-header-actions input{
+width: 250px;
+}
+
+
+.no-customer-message{
+    font-size: 25px;
+    color: #dc2626;
+    font-weight: 600;
+    text-align: center;
+    padding-top: 100px;
+}
+
+
+.total-orders-customer{
+    text-align: center;
+}

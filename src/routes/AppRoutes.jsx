@@ -10,6 +10,8 @@ import { useState, useEffect } from "react";
 
 import { AdminLogin } from "../pages/admin/login/AdminLogin";
 import { Orders } from "../pages/admin/orders/Orders";
+import { Customers } from "../pages/admin/customers/Customers";
+import { ProductAdmin } from "../pages/admin/products/Products";
 
 function UserLayout() {
   const { cartCount } = useCart();
@@ -57,6 +59,8 @@ function AdminLayout() {
       <Routes>
         <Route path="/login/" element={<AdminLogin />} />
         <Route path="/orders/" element={<Orders />} />
+        <Route path="/customers/" element={<Customers />} />
+        <Route path="/products/" element={<ProductAdmin />} />
       </Routes>
     </>
   );
